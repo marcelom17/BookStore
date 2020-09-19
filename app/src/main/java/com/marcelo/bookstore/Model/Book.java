@@ -4,11 +4,11 @@ package com.marcelo.bookstore.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.Parcelable.Creator;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Book implements Parcelable {
+public class Book implements Parcelable
+{
 
     @SerializedName("kind")
     @Expose
@@ -38,7 +38,7 @@ public class Book implements Parcelable {
 
 
         @SuppressWarnings({
-                "unchecked"
+            "unchecked"
         })
         public Book createFromParcel(Parcel in) {
             return new Book(in);
@@ -48,7 +48,8 @@ public class Book implements Parcelable {
             return (new Book[size]);
         }
 
-    };
+    }
+    ;
 
     protected Book(Parcel in) {
         this.kind = ((String) in.readValue((String.class.getClassLoader())));
@@ -140,7 +141,7 @@ public class Book implements Parcelable {
     }
 
     public int describeContents() {
-        return 0;
+        return  0;
     }
 
 }

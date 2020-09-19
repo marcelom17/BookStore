@@ -14,9 +14,6 @@ public class VolumeInfo implements Parcelable
     @SerializedName("title")
     @Expose
     private String title;
-    @SerializedName("subtitle")
-    @Expose
-    private String subtitle;
     @SerializedName("authors")
     @Expose
     private List<String> authors = null;
@@ -29,9 +26,6 @@ public class VolumeInfo implements Parcelable
     @SerializedName("description")
     @Expose
     private String description;
-    @SerializedName("industryIdentifiers")
-    @Expose
-    private List<IndustryIdentifier> industryIdentifiers = null;
     @SerializedName("readingModes")
     @Expose
     private ReadingModes readingModes;
@@ -90,12 +84,10 @@ public class VolumeInfo implements Parcelable
 
     protected VolumeInfo(Parcel in) {
         this.title = ((String) in.readValue((String.class.getClassLoader())));
-        this.subtitle = ((String) in.readValue((String.class.getClassLoader())));
         in.readList(this.authors, (java.lang.String.class.getClassLoader()));
         this.publisher = ((String) in.readValue((String.class.getClassLoader())));
         this.publishedDate = ((String) in.readValue((String.class.getClassLoader())));
         this.description = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.industryIdentifiers, (com.marcelo.bookstore.Model.IndustryIdentifier.class.getClassLoader()));
         this.readingModes = ((ReadingModes) in.readValue((ReadingModes.class.getClassLoader())));
         this.pageCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.printType = ((String) in.readValue((String.class.getClassLoader())));
@@ -120,14 +112,6 @@ public class VolumeInfo implements Parcelable
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getSubtitle() {
-        return subtitle;
-    }
-
-    public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
     }
 
     public List<String> getAuthors() {
@@ -160,14 +144,6 @@ public class VolumeInfo implements Parcelable
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public List<IndustryIdentifier> getIndustryIdentifiers() {
-        return industryIdentifiers;
-    }
-
-    public void setIndustryIdentifiers(List<IndustryIdentifier> industryIdentifiers) {
-        this.industryIdentifiers = industryIdentifiers;
     }
 
     public ReadingModes getReadingModes() {
@@ -276,12 +252,10 @@ public class VolumeInfo implements Parcelable
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(title);
-        dest.writeValue(subtitle);
         dest.writeList(authors);
         dest.writeValue(publisher);
         dest.writeValue(publishedDate);
         dest.writeValue(description);
-        dest.writeList(industryIdentifiers);
         dest.writeValue(readingModes);
         dest.writeValue(pageCount);
         dest.writeValue(printType);
