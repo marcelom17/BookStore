@@ -18,7 +18,26 @@ import java.util.ArrayList;
 
 public final class JSONFilesManager {
 
-    public static Promise<ArrayList<Book>, Throwable, ?> getBooksFromJSON(JsonObject json){
+    public static Promise<Integer, Throwable, ?> getTotalBooksFromJSON(JsonObject json) {
+        /* Promise declaration */
+        DeferredObject dObj = new DeferredObject();
+
+        /* Variables declaration */
+        int total = 0;
+
+        /* Read total number of books from JSON */
+        try {
+            if (json.has("totalItems"))
+                total = json.get("totalItems").getAsInt();
+
+            return dObj.resolve(total);
+        } catch (Exception e){
+            Log.i("getTotalBooksFromJSON","Exception: "+e.getMessage());
+        }
+
+        return dObj.reject(null);
+    }
+        public static Promise<ArrayList<Book>, Throwable, ?> getBooksFromJSON(JsonObject json){
         /* Promise declaration */
         DeferredObject dObj = new DeferredObject();
 

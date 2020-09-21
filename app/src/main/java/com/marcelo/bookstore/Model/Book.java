@@ -144,4 +144,12 @@ public class Book implements Parcelable
         return  0;
     }
 
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id='" + id + '\'' +
+                ", volumeInfo=" + volumeInfo +
+                ", saleInfo=" + saleInfo +
+                '}';
+    }
 }

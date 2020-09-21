@@ -275,4 +275,13 @@ public class VolumeInfo implements Parcelable
         return  0;
     }
 
+    @Override
+    public String toString() {
+        return "VolumeInfo{" +
+                "title='" + title + '\'' +
+                ", authors=" + authors +
+                ", description='" + description + '\'' +
+                ", imageLinks=" + imageLinks +
+                '}';
+    }
 }
