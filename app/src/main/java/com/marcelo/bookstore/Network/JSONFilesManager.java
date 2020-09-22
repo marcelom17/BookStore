@@ -32,13 +32,14 @@ public final class JSONFilesManager {
                 total = json.get("totalItems").getAsInt();
 
             return dObj.resolve(total);
-        } catch (Exception e){
-            Log.i("getTotalBooksFromJSON","Exception: "+e.getMessage());
+        } catch (Exception e) {
+            Log.i("getTotalBooksFromJSON", "Exception: " + e.getMessage());
         }
 
         return dObj.reject(null);
     }
-        public static Promise<ArrayList<Book>, Throwable, ?> getBooksFromJSON(JsonObject json){
+
+    public static Promise<ArrayList<Book>, Throwable, ?> getBooksFromJSON(JsonObject json) {
         /* Promise declaration */
         DeferredObject dObj = new DeferredObject();
 
@@ -46,7 +47,7 @@ public final class JSONFilesManager {
         ArrayList<Book> books = new ArrayList<>();
 
         /* Read books from JSON */
-        try{
+        try {
             /* Read Array of Books  */
             JsonArray itemsObject = json.getAsJsonObject().getAsJsonArray("items");
 
@@ -59,50 +60,55 @@ public final class JSONFilesManager {
             String thumbnail = "--";
             String smallThumbnail = "--";
 
-            for(JsonElement jsonElement : itemsObject){
-                try{
+            for (JsonElement jsonElement : itemsObject) {
+                try {
                     JsonObject temp = jsonElement.getAsJsonObject();
-
+                    authors.clear();
                     /* Read items sub fields */
-                    if(temp.has("id"))
+                    if (temp.has("id"))
                         id = temp.get("id").getAsString();
 
-                    if(temp.has("volumeInfo")){
+                    if (temp.has("volumeInfo")) {
                         JsonObject volumeInfoObject = temp.get("volumeInfo").getAsJsonObject();
 
                         /* Read volumeInfo subfields*/
-                        if(volumeInfoObject.has("title"))
+                        if (volumeInfoObject.has("title"))
                             title = volumeInfoObject.get("title").getAsString();
-                        if(volumeInfoObject.has("authors")) {
+                        if (volumeInfoObject.has("authors")) {
                             JsonArray authorsJsonArray = volumeInfoObject.get("authors").getAsJsonArray();
-                            for(JsonElement author : authorsJsonArray){
+                            for (JsonElement author : authorsJsonArray) {
                                 authors.add(author.getAsString());
                             }
                            /* for(int i=0; i< authorsJsonArray.size();i++){
                                 authors.add(authorsJsonArray.get(i).getAsString());
                             }*/
                         }
-                        if(volumeInfoObject.has("description"))
+                        if (volumeInfoObject.has("description"))
                             description = volumeInfoObject.get("description").getAsString();
 
-                        if(volumeInfoObject.has("imageLinks")){
+                        if (volumeInfoObject.has("imageLinks")) {
                             JsonObject linksObj = volumeInfoObject.get("imageLinks").getAsJsonObject();
-                            if(linksObj.has("thumbnail"))
+                            if (linksObj.has("thumbnail"))
                                 thumbnail = linksObj.get("thumbnail").getAsString();
-                            if(linksObj.has("smallThumbnail"))
+                            if (linksObj.has("smallThumbnail"))
                                 smallThumbnail = linksObj.get("smallThumbnail").getAsString();
                         }
-
-                        if(volumeInfoObject.has("buylink"))
-                            buylink = volumeInfoObject.get("buyLink").getAsString();
-
                     }
-                } catch (JsonParseException j){
+                    if (temp.has("saleInfo")) {
+                        JsonObject saleInfoObject = temp.get("saleInfo").getAsJsonObject();
+                        if (saleInfoObject.has("buyLink"))
+                            buylink = saleInfoObject.get("buyLink").getAsString();
+                    }
+                } catch (JsonParseException j) {
                     continue;
-                } catch (NumberFormatException nfe){
+                } catch (NumberFormatException nfe) {
                     nfe.fillInStackTrace();
                     continue;
                 }
+
+                ArrayList<String> temp = new ArrayList<>();
+                for (String author : authors)
+                    temp.add(author);
 
                 ImageLinks imageLinks = new ImageLinks();
                 imageLinks.setThumbnail(thumbnail);
@@ -110,7 +116,7 @@ public final class JSONFilesManager {
 
                 VolumeInfo volumeInfo = new VolumeInfo();
                 volumeInfo.setTitle(title);
-                volumeInfo.setAuthors(authors);
+                volumeInfo.setAuthors(temp);
                 volumeInfo.setDescription(description);
                 volumeInfo.setImageLinks(imageLinks);
 
@@ -125,8 +131,8 @@ public final class JSONFilesManager {
             }
 
             return dObj.resolve(books);
-        } catch(Exception e){
-            Log.i("getBooksFromJSON","Exception: "+e.getMessage());
+        } catch (Exception e) {
+            Log.i("getBooksFromJSON", "Exception: " + e.getMessage());
         }
 
         return dObj.reject(null);

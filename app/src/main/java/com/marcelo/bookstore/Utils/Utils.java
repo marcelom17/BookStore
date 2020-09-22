@@ -12,5 +12,7 @@ public class Utils {
     public static final String SCROLL_POSITION = "SCROLL_POSITION";
     public static final String SCROLL_POSITION_BOOKS_LIST = "SCROLL_POSITION_FLEET_VEHICLES_TAB";
 
+    //Bundle Key
+    public static final String BOOK_BUNDLE_KEY = "BOOK_BUNDLE_KEY";
 
 }

@@ -6,13 +6,17 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.marcelo.bookstore.Adapter.BookListAdapter;
+import com.marcelo.bookstore.Model.Book;
 import com.marcelo.bookstore.R;
 import com.marcelo.bookstore.Utils.EndlessRecyclerViewScrollListener;
+import com.marcelo.bookstore.Utils.Utils;
 import com.marcelo.bookstore.ViewModel.BookListViewModel;
 import com.marcelo.bookstore.ViewModel.SplashScreenViewModel;
 
@@ -90,9 +94,18 @@ public class BookListActivity extends AppCompatActivity {
         };
 
         booksListRecyclerView.addOnScrollListener(scrollListener);
-   //     bookListAdapter.setOnItemClickListener(position -> {openVehicleWithID(position); });
+        bookListAdapter.setOnItemClickListener(position -> {
+            Book book = bookListAdapter.getBook(position);
+            Intent intent = new Intent(this, BookDetailsActivity.class);
+            intent.putExtra(Utils.BOOK_BUNDLE_KEY, book);
+            startActivity(intent);
+        });
 
         booksListRecyclerView.setScrollY(scrollPosition);
+
+    }
+
+    public void showFavorites(View view) {
 
     }
 }

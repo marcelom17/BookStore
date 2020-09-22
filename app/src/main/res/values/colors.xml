@@ -8,4 +8,6 @@
     <color name="colorGray">#A9A9A9</color>
     <color name="colorLightestGray">#DCDCDC</color>
     <color name="colorCardBackgound">#FAFAFA</color>
+    <color name="colorButtonBlue">#24A0ED</color>
+    <color name="colorWhite">#FFFFFF</color>
 </resources>

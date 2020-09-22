@@ -4,7 +4,8 @@
     android:layout_height="250dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="5dp"
-    app:cardCornerRadius="4dp">
+    app:cardCornerRadius="4dp"
+    android:id="@+id/bookCardView">
 
     <LinearLayout
         android:layout_width="match_parent"

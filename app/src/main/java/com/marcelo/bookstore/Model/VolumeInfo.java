@@ -1,5 +1,6 @@
 package com.marcelo.bookstore.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -15,7 +16,7 @@ public class VolumeInfo implements Parcelable
     private String title;
     @SerializedName("authors")
     @Expose
-    private List<String> authors = null;
+    private List<String> authors = new ArrayList<>();
     @SerializedName("publisher")
     @Expose
     private String publisher;
@@ -36,7 +37,7 @@ public class VolumeInfo implements Parcelable
     private String printType;
     @SerializedName("categories")
     @Expose
-    private List<String> categories = null;
+    private List<String> categories = new ArrayList<>();
     @SerializedName("maturityRating")
     @Expose
     private String maturityRating;
@@ -83,14 +84,16 @@ public class VolumeInfo implements Parcelable
 
     protected VolumeInfo(Parcel in) {
         this.title = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.authors, (java.lang.String.class.getClassLoader()));
+       // in.readList(this.authors, (java.lang.String.class.getClassLoader()));
+        in.readList(this.authors, null);
         this.publisher = ((String) in.readValue((String.class.getClassLoader())));
         this.publishedDate = ((String) in.readValue((String.class.getClassLoader())));
         this.description = ((String) in.readValue((String.class.getClassLoader())));
         this.readingModes = ((ReadingModes) in.readValue((ReadingModes.class.getClassLoader())));
         this.pageCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.printType = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.categories, (java.lang.String.class.getClassLoader()));
+        //in.readList(this.categories, (java.lang.String.class.getClassLoader()));
+        in.readList(this.categories, null);
         this.maturityRating = ((String) in.readValue((String.class.getClassLoader())));
         this.allowAnonLogging = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
         this.contentVersion = ((String) in.readValue((String.class.getClassLoader())));

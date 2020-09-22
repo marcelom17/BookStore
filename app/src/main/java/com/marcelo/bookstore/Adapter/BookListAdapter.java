@@ -1,6 +1,7 @@
 package com.marcelo.bookstore.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.marcelo.bookstore.Model.Book;
 import com.marcelo.bookstore.R;
+import com.marcelo.bookstore.Utils.Utils;
+import com.marcelo.bookstore.View.BookDetailsActivity;
 
 import java.util.ArrayList;
 
@@ -44,12 +48,23 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookLi
 
         private ImageView thumbnailIV;
         private TextView titleTV;
+        private CardView bookCV;
 
-        public BookListViewHolder(@NonNull View itemView) {
+        public BookListViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
 
             thumbnailIV = itemView.findViewById(R.id.thumbnailIV);
             titleTV = itemView.findViewById(R.id.titleTV);
+            bookCV = itemView.findViewById(R.id.bookCardView);
+
+            itemView.setOnClickListener(v ->{
+                if(listener != null){
+                    int position = getAdapterPosition();
+                    if(position != RecyclerView.NO_POSITION){
+                        listener.onItemClick(position);
+                    }
+                }
+            });
         }
     }
 
@@ -61,7 +76,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookLi
         LayoutInflater inflater = LayoutInflater.from(mContext);
 
         v = inflater.inflate(R.layout.item_book_list, parent, false);
-        bookListViewHolder = new BookListViewHolder(v);
+        bookListViewHolder = new BookListViewHolder(v, onClickListener);
         //TODO add end type to add a progressbar for when user is at the bottom & more books are loading
 
         return bookListViewHolder;
@@ -83,8 +98,6 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookLi
                     //.centerCrop()
                     .into(holder.thumbnailIV);
         }
-
-
     }
 
     @Override
@@ -96,4 +109,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookLi
         books.addAll(newBooks);
     }
 
+    public Book getBook(int position){
+        return books.get(position);
+    }
 }
