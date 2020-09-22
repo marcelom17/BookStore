@@ -1,4 +1,3 @@
-
 package com.marcelo.bookstore.Model;
 
 import android.os.Parcel;
@@ -150,6 +149,6 @@ public class Book implements Parcelable
                 "id='" + id + '\'' +
                 ", volumeInfo=" + volumeInfo +
                 ", saleInfo=" + saleInfo +
-                '}';
+                '}'+"\n";
     }
 }

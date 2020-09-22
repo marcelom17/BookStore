@@ -1,4 +1,3 @@
-
 package com.marcelo.bookstore.Model;
 
 import java.util.List;

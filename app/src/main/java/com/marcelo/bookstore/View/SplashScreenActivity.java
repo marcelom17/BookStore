@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -28,20 +29,18 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         init();
 
-
-
     }
 
     private void init(){
         loadingPB = findViewById(R.id.loadingProgress);
-        splashScreenViewModel = new SplashScreenViewModel();
-        splashScreenViewModel.getBooks().observe(this, new Observer<ArrayList<Book>>() {
-            @Override
-            public void onChanged(ArrayList<Book> books) {
-                //when new data it's available, will do the next steps
-                Log.i("observer", "new info: "+books.toString());
+        splashScreenViewModel = new ViewModelProvider(this).get(SplashScreenViewModel.class);
+        splashScreenViewModel.init();
+        splashScreenViewModel.getBooks().observe(this, books -> {
+            //when new data it's available, will do the next steps
+            Log.i("observer", "Arraylist Size: " + books.size());
+            Log.i("observer", "new info: "+books.toString());
 
-            }
+            //go to main list
         });
     }
 

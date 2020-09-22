@@ -61,6 +61,9 @@ public final class JSONFilesManager {
                     JsonObject temp = jsonElement.getAsJsonObject();
 
                     /* Read items sub fields */
+                    if(temp.has("id"))
+                        id = temp.get("id").getAsString();
+
                     if(temp.has("volumeInfo")){
                         JsonObject volumeInfoObject = temp.get("volumeInfo").getAsJsonObject();
 
