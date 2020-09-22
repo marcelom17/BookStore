@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ProgressBar;
@@ -38,9 +39,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         splashScreenViewModel.getBooks().observe(this, books -> {
             //when new data it's available, will do the next steps
             Log.i("observer", "Arraylist Size: " + books.size());
-            Log.i("observer", "new info: "+books.toString());
-
             //go to main list
+            Intent intent = new Intent(this, BookListActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 

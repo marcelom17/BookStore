@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import com.marcelo.bookstore.Model.Book;
+import com.marcelo.bookstore.Model.ImageLinks;
 import com.marcelo.bookstore.Model.SaleInfo;
 import com.marcelo.bookstore.Model.VolumeInfo;
 
@@ -55,6 +56,8 @@ public final class JSONFilesManager {
             ArrayList<String> authors = new ArrayList<>();
             String description = "--";
             String buylink = "--";
+            String thumbnail = "--";
+            String smallThumbnail = "--";
 
             for(JsonElement jsonElement : itemsObject){
                 try{
@@ -81,6 +84,15 @@ public final class JSONFilesManager {
                         }
                         if(volumeInfoObject.has("description"))
                             description = volumeInfoObject.get("description").getAsString();
+
+                        if(volumeInfoObject.has("imageLinks")){
+                            JsonObject linksObj = volumeInfoObject.get("imageLinks").getAsJsonObject();
+                            if(linksObj.has("thumbnail"))
+                                thumbnail = linksObj.get("thumbnail").getAsString();
+                            if(linksObj.has("smallThumbnail"))
+                                smallThumbnail = linksObj.get("smallThumbnail").getAsString();
+                        }
+
                         if(volumeInfoObject.has("buylink"))
                             buylink = volumeInfoObject.get("buyLink").getAsString();
 
@@ -92,10 +104,15 @@ public final class JSONFilesManager {
                     continue;
                 }
 
+                ImageLinks imageLinks = new ImageLinks();
+                imageLinks.setThumbnail(thumbnail);
+                imageLinks.setSmallThumbnail(smallThumbnail);
+
                 VolumeInfo volumeInfo = new VolumeInfo();
                 volumeInfo.setTitle(title);
                 volumeInfo.setAuthors(authors);
                 volumeInfo.setDescription(description);
+                volumeInfo.setImageLinks(imageLinks);
 
                 SaleInfo saleInfo = new SaleInfo();
                 saleInfo.setBuyLink(buylink);
