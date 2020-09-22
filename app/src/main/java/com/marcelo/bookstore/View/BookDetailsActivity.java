@@ -3,6 +3,7 @@ package com.marcelo.bookstore.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,19 +19,18 @@ import com.marcelo.bookstore.Model.Book;
 import com.marcelo.bookstore.R;
 import com.marcelo.bookstore.Utils.Utils;
 import com.marcelo.bookstore.ViewModel.BookDetailsViewModel;
-import com.marcelo.bookstore.ViewModel.BookListViewModel;
 
 public class BookDetailsActivity extends AppCompatActivity {
 
-    BookDetailsViewModel bookDetailsViewModel;
-    Book book = new Book();
+    private BookDetailsViewModel bookDetailsViewModel;
+    private Book book = new Book();
 
-    ImageView thumbnailIV;
-    TextView titleTV;
-    TextView authorTV;
-    TextView descriptionTV;
-    Button  buyBtn;
-    ImageView favBtn;
+    private ImageView thumbnailIV;
+    private TextView titleTV;
+    private TextView authorTV;
+    private TextView descriptionTV;
+    private Button  buyBtn;
+    private ImageView favBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +44,10 @@ public class BookDetailsActivity extends AppCompatActivity {
         init();
     }
 
+    @SuppressLint("ResourceAsColor")
     private void init(){
         bookDetailsViewModel = new ViewModelProvider(this).get(BookDetailsViewModel.class);
-        bookDetailsViewModel.init();
+        bookDetailsViewModel.init(getApplicationContext());
 
         thumbnailIV = findViewById(R.id.bookDetailsThumbnailIV);
         titleTV = findViewById(R.id.bookDetailsTitleTV);
@@ -59,10 +60,15 @@ public class BookDetailsActivity extends AppCompatActivity {
             if (book.getSaleInfo().getBuyLink() == null || book.getSaleInfo().getBuyLink().equals("--")) {
                 buyBtn.setClickable(false);
                 buyBtn.setAlpha((float) .5);
+                buyBtn.setBackgroundColor(R.color.colorGray);
             } else {
                 buyBtn.setClickable(true);
                 buyBtn.setAlpha(1);
             }
+            if(book.isFavorite())
+                favBtn.setImageResource(R.drawable.ic_baseline_favorite_24);
+            else
+                favBtn.setImageResource(R.drawable.ic_baseline_favorite_border_24);
 
             if (book.getVolumeInfo().getImageLinks() != null) {
                 String imageUrl = book.getVolumeInfo().getImageLinks().getThumbnail()
@@ -102,8 +108,16 @@ public class BookDetailsActivity extends AppCompatActivity {
         onBackPressed();
     }
 
-    public void addToFavorites(View view) {
-        
-        favBtn.setImageResource(R.drawable.ic_baseline_favorite_24);
+    public void changeFavorites(View view) {
+       // if(bookDetailsViewModel.isBookFavorite()) {
+        if(book.isFavorite()) {
+            bookDetailsViewModel.removeBookFromFavorite(book.getId());
+            favBtn.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+            book.setFavorite(false);
+        } else{
+            bookDetailsViewModel.addBookToFavorite(book.getId());
+            favBtn.setImageResource(R.drawable.ic_baseline_favorite_24);
+            book.setFavorite(true);
+        }
     }
 }

@@ -33,6 +33,9 @@ public class Book implements Parcelable
     @SerializedName("searchInfo")
     @Expose
     private SearchInfo searchInfo;
+
+    private boolean isFavorite;
+
     public final static Parcelable.Creator<Book> CREATOR = new Creator<Book>() {
 
 
@@ -59,6 +62,7 @@ public class Book implements Parcelable
         this.saleInfo = ((SaleInfo) in.readValue((SaleInfo.class.getClassLoader())));
         this.accessInfo = ((AccessInfo) in.readValue((AccessInfo.class.getClassLoader())));
         this.searchInfo = ((SearchInfo) in.readValue((SearchInfo.class.getClassLoader())));
+        this.isFavorite = in.readBoolean();
     }
 
     public Book() {
@@ -128,6 +132,14 @@ public class Book implements Parcelable
         this.searchInfo = searchInfo;
     }
 
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(kind);
         dest.writeValue(id);
@@ -137,6 +149,7 @@ public class Book implements Parcelable
         dest.writeValue(saleInfo);
         dest.writeValue(accessInfo);
         dest.writeValue(searchInfo);
+        dest.writeBoolean(isFavorite);
     }
 
     public int describeContents() {
@@ -149,6 +162,7 @@ public class Book implements Parcelable
                 "id='" + id + '\'' +
                 ", volumeInfo=" + volumeInfo +
                 ", saleInfo=" + saleInfo +
+                ", isFavorite=" + isFavorite +
                 '}'+"\n";
     }
 }

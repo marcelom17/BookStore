@@ -36,6 +36,8 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookLi
         this.mContext = mContext;
     }
 
+
+
     public interface OnItemClickListener{
         void onItemClick(int position);
     }
@@ -112,4 +114,13 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookLi
     public Book getBook(int position){
         return books.get(position);
     }
+
+    public void clearBooks(){
+        books.clear();
+    }
+
+    public ArrayList<Book> getCurrentArray() {
+        return books;
+    }
+
 }

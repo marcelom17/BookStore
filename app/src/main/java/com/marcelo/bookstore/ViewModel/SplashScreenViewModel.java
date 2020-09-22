@@ -1,5 +1,7 @@
 package com.marcelo.bookstore.ViewModel;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -14,8 +16,8 @@ public class SplashScreenViewModel extends ViewModel {
     private BooksRepository booksRepository;
     private LiveData<ArrayList<Book>> mBooks;
 
-    public void init(){
-        booksRepository = new BooksRepository();
+    public void init(Context mContext){
+        booksRepository = new BooksRepository(mContext);
         mBooks = booksRepository.getBooks();
         //get the first 20 books for when app displays the main list, is already populated, no need to wait
         booksRepository.getBooksFromAPI(0);

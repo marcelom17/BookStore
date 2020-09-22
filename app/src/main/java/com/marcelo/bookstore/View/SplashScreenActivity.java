@@ -35,7 +35,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private void init(){
         loadingPB = findViewById(R.id.loadingProgress);
         splashScreenViewModel = new ViewModelProvider(this).get(SplashScreenViewModel.class);
-        splashScreenViewModel.init();
+        splashScreenViewModel.init(getApplicationContext());
         splashScreenViewModel.getBooks().observe(this, books -> {
             //when new data it's available, will do the next steps
             Log.i("observer", "Arraylist Size: " + books.size());

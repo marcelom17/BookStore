@@ -2,6 +2,8 @@ package com.marcelo.bookstore.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.marcelo.bookstore.Adapter.BookListAdapter;
@@ -33,6 +36,13 @@ public class BookListActivity extends AppCompatActivity {
     private ConstraintLayout llLoading;
     private TextView tvReleaseToUpdate;
     private boolean toUpdate = false;
+    private ImageView favBtn;
+    boolean isFavoriteOn = false;
+    private Observer favsObserver;
+    private Observer bookObserver;
+
+    public BookListActivity() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +53,11 @@ public class BookListActivity extends AppCompatActivity {
     }
 
     private void init(){
+        bookObserver = o -> {};
+        favsObserver = o -> {};
+
         bookListViewModel = new ViewModelProvider(this).get(BookListViewModel.class);
-        bookListViewModel.init();
+        bookListViewModel.init(getApplicationContext());
 
         bookListLayoutManager = new GridLayoutManager(getApplicationContext(),2);
         booksListRecyclerView = findViewById(R.id.bookListRecyclerView);
@@ -102,10 +115,39 @@ public class BookListActivity extends AppCompatActivity {
         });
 
         booksListRecyclerView.setScrollY(scrollPosition);
+        favBtn = findViewById(R.id.bookListShowFavoritesBtn);
 
     }
 
     public void showFavorites(View view) {
-
+        if(!isFavoriteOn) {
+           // bookListViewModel.saveCurrentArray(bookListAdapter.getCurrentArray());
+            bookListViewModel.getBooks().removeObservers(this);
+            bookListViewModel.clearFavorites();
+            bookListAdapter.clearBooks();
+            bookListAdapter.notifyDataSetChanged();
+            bookListViewModel.getFavorites().observe(this, books -> {
+                if (books != null) {
+                    bookListAdapter.addBooks(books);
+                    bookListAdapter.notifyDataSetChanged();
+                }
+            });
+            favBtn.setImageResource(R.drawable.ic_baseline_favorite_24);
+            isFavoriteOn = true;
+        } else{
+            bookListViewModel.getFavorites().removeObservers(this);
+            bookListViewModel.getMoreBooks(0);
+            bookListViewModel.clearBooks();
+            bookListAdapter.clearBooks();
+            bookListAdapter.notifyDataSetChanged();
+            bookListViewModel.getBooks().observe(this, books -> {
+                if (books != null) {
+                    bookListAdapter.addBooks(books);
+                    bookListAdapter.notifyDataSetChanged();
+                }
+            });
+            favBtn.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+            isFavoriteOn = false;
+        }
     }
 }

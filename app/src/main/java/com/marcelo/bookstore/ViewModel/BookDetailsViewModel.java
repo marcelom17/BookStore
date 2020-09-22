@@ -1,5 +1,7 @@
 package com.marcelo.bookstore.ViewModel;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -12,8 +14,8 @@ public class BookDetailsViewModel extends ViewModel {
     private BooksRepository booksRepository;
     private MutableLiveData<Book> book;
 
-    public void init() {
-        booksRepository = new BooksRepository();
+    public void init(Context mContext) {
+        booksRepository = new BooksRepository(mContext);
     }
 /*
     public void getSpecificBookDetails(String bookID){
@@ -24,4 +26,11 @@ public class BookDetailsViewModel extends ViewModel {
         return book;
     }
 
+    public void addBookToFavorite(String bookID){
+        booksRepository.addBookToFavorites(bookID);
+    }
+
+    public void removeBookFromFavorite(String id) {
+        booksRepository.removeBookFromFavorites(id);
+    }
 }
