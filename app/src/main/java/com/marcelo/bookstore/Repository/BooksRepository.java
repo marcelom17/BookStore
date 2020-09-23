@@ -107,7 +107,6 @@ public class BooksRepository {
             getSpecificBookFromAPI(id, true);
         }
 
-      //  favorites.postValue(tempBooks);
     }
 
     public void fetchBook(String bookID){

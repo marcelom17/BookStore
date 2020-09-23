@@ -109,35 +109,5 @@ public class BookListActivity extends AppCompatActivity {
         Intent intent = new Intent(this, BookListFavoritesActivity.class);
         startActivity(intent);
 
-        /*
-        if(!isFavoriteOn) {
-            bookListViewModel.getBooks().removeObservers(this);
-            bookListAdapter.clearBooks();
-            bookListAdapter.notifyDataSetChanged();
-            bookListViewModel.startGettingBooks();
-            bookListViewModel.getFavorites().observe(this, books -> {
-                if (books != null) {
-                    bookListAdapter.addBooks(books);
-                    bookListAdapter.notifyDataSetChanged();
-                }
-            });
-            favBtn.setImageResource(R.drawable.ic_baseline_favorite_24);
-            isFavoriteOn = true;
-        } else{
-            bookListViewModel.getFavorites().removeObservers(this);
-            bookListAdapter.clearBooks();
-            bookListAdapter.notifyDataSetChanged();
-            bookListViewModel.startGettingBooks();
-            bookListViewModel.getBooks().observe(this, books -> {
-                if (books != null) {
-                    bookListAdapter.addBooks(books);
-                    bookListAdapter.notifyDataSetChanged();
-                }
-            });
-            favBtn.setImageResource(R.drawable.ic_baseline_favorite_border_24);
-            isFavoriteOn = false;
-        }
-
-         */
     }
 }
