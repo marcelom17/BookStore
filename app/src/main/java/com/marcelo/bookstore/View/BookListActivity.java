@@ -33,13 +33,8 @@ public class BookListActivity extends AppCompatActivity {
     private GridLayoutManager bookListLayoutManager;
     private int scrollPosition;
     // to user as refresh on top & progress on the bottom, needs to be redesigned for 2 columns
-    private ConstraintLayout llLoading;
-    private TextView tvReleaseToUpdate;
-    private boolean toUpdate = false;
     private ImageView favBtn;
     boolean isFavoriteOn = false;
-    private Observer favsObserver;
-    private Observer bookObserver;
 
     public BookListActivity() {
     }
@@ -53,9 +48,6 @@ public class BookListActivity extends AppCompatActivity {
     }
 
     private void init(){
-        bookObserver = o -> {};
-        favsObserver = o -> {};
-
         bookListViewModel = new ViewModelProvider(this).get(BookListViewModel.class);
         bookListViewModel.init(getApplicationContext());
 
@@ -83,22 +75,14 @@ public class BookListActivity extends AppCompatActivity {
 
             @Override
             public void onLoading() {
-                //put loading
-                //loadingLayout.setVisibility(View.VISIBLE);
                 booksListRecyclerView.setClickable(false);
             }
 
             @Override
-            public void onFinishLoading() {
-                //loadingLayout.setVisibility(View.GONE);
-                //fleetRecyclerView.setClickable(true);
-            }
+            public void onFinishLoading() { }
 
             @Override
-            public void onNoMoreItems() {
-                // show view "no more items"
-                //fleetRecyclerViewAdapter.removeLoading();
-            }
+            public void onNoMoreItems() { }
 
             @Override
             public void saveScrollPosition(RecyclerView view, int dx, int dy) {
@@ -119,13 +103,18 @@ public class BookListActivity extends AppCompatActivity {
 
     }
 
+
     public void showFavorites(View view) {
+
+        Intent intent = new Intent(this, BookListFavoritesActivity.class);
+        startActivity(intent);
+
+        /*
         if(!isFavoriteOn) {
-           // bookListViewModel.saveCurrentArray(bookListAdapter.getCurrentArray());
             bookListViewModel.getBooks().removeObservers(this);
-            bookListViewModel.clearFavorites();
             bookListAdapter.clearBooks();
             bookListAdapter.notifyDataSetChanged();
+            bookListViewModel.startGettingBooks();
             bookListViewModel.getFavorites().observe(this, books -> {
                 if (books != null) {
                     bookListAdapter.addBooks(books);
@@ -136,10 +125,9 @@ public class BookListActivity extends AppCompatActivity {
             isFavoriteOn = true;
         } else{
             bookListViewModel.getFavorites().removeObservers(this);
-            bookListViewModel.getMoreBooks(0);
-            bookListViewModel.clearBooks();
             bookListAdapter.clearBooks();
             bookListAdapter.notifyDataSetChanged();
+            bookListViewModel.startGettingBooks();
             bookListViewModel.getBooks().observe(this, books -> {
                 if (books != null) {
                     bookListAdapter.addBooks(books);
@@ -149,5 +137,7 @@ public class BookListActivity extends AppCompatActivity {
             favBtn.setImageResource(R.drawable.ic_baseline_favorite_border_24);
             isFavoriteOn = false;
         }
+
+         */
     }
 }

@@ -2,4 +2,6 @@
     <string name="app_name">BookStore</string>
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="loading">Loading…</string>
+    <string name="favorites">Favorites</string>
+    <string name="book_list">Book List</string>
 </resources>

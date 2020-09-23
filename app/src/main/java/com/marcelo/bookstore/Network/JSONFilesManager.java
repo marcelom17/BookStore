@@ -79,9 +79,6 @@ public final class JSONFilesManager {
                             for (JsonElement author : authorsJsonArray) {
                                 authors.add(author.getAsString());
                             }
-                           /* for(int i=0; i< authorsJsonArray.size();i++){
-                                authors.add(authorsJsonArray.get(i).getAsString());
-                            }*/
                         }
                         if (volumeInfoObject.has("description"))
                             description = volumeInfoObject.get("description").getAsString();
@@ -131,6 +128,98 @@ public final class JSONFilesManager {
             }
 
             return dObj.resolve(books);
+        } catch (Exception e) {
+            Log.i("getBooksFromJSON", "Exception: " + e.getMessage());
+        }
+
+        return dObj.reject(null);
+
+    }
+
+    public static Promise<Book, Throwable, ?> getSpecificBookFromJSON(JsonObject json) {
+        /* Promise declaration */
+        DeferredObject dObj = new DeferredObject();
+
+        /* Variables */
+        Book book = new Book();
+
+        /* Read books from JSON */
+        try {
+            /* Fields to Read */
+            String id = "--";
+            String title = "--";
+            ArrayList<String> authors = new ArrayList<>();
+            String description = "--";
+            String buylink = "--";
+            String thumbnail = "--";
+            String smallThumbnail = "--";
+
+
+            try {
+                JsonObject temp = json;
+                authors.clear();
+                /* Read items sub fields */
+                if (temp.has("id"))
+                    id = temp.get("id").getAsString();
+
+                if (temp.has("volumeInfo")) {
+                    JsonObject volumeInfoObject = temp.get("volumeInfo").getAsJsonObject();
+
+                    /* Read volumeInfo subfields*/
+                    if (volumeInfoObject.has("title"))
+                        title = volumeInfoObject.get("title").getAsString();
+                    if (volumeInfoObject.has("authors")) {
+                        JsonArray authorsJsonArray = volumeInfoObject.get("authors").getAsJsonArray();
+                        for (JsonElement author : authorsJsonArray) {
+                            authors.add(author.getAsString());
+                        }
+                    }
+                    if (volumeInfoObject.has("description"))
+                        description = volumeInfoObject.get("description").getAsString();
+
+                    if (volumeInfoObject.has("imageLinks")) {
+                        JsonObject linksObj = volumeInfoObject.get("imageLinks").getAsJsonObject();
+                        if (linksObj.has("thumbnail"))
+                            thumbnail = linksObj.get("thumbnail").getAsString();
+                        if (linksObj.has("smallThumbnail"))
+                            smallThumbnail = linksObj.get("smallThumbnail").getAsString();
+                    }
+                }
+                if (temp.has("saleInfo")) {
+                    JsonObject saleInfoObject = temp.get("saleInfo").getAsJsonObject();
+                    if (saleInfoObject.has("buyLink"))
+                        buylink = saleInfoObject.get("buyLink").getAsString();
+                }
+            } catch (JsonParseException j) {
+
+            } catch (NumberFormatException nfe) {
+                nfe.fillInStackTrace();
+            }
+
+            ArrayList<String> temp = new ArrayList<>();
+            for (String author : authors)
+                temp.add(author);
+
+            ImageLinks imageLinks = new ImageLinks();
+            imageLinks.setThumbnail(thumbnail);
+            imageLinks.setSmallThumbnail(smallThumbnail);
+
+            VolumeInfo volumeInfo = new VolumeInfo();
+            volumeInfo.setTitle(title);
+            volumeInfo.setAuthors(temp);
+            volumeInfo.setDescription(description);
+            volumeInfo.setImageLinks(imageLinks);
+
+            SaleInfo saleInfo = new SaleInfo();
+            saleInfo.setBuyLink(buylink);
+
+
+            book.setId(id);
+            book.setVolumeInfo(volumeInfo);
+            book.setSaleInfo(saleInfo);
+
+
+            return dObj.resolve(book);
         } catch (Exception e) {
             Log.i("getBooksFromJSON", "Exception: " + e.getMessage());
         }

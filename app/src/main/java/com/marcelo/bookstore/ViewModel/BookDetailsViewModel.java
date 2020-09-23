@@ -12,16 +12,15 @@ import com.marcelo.bookstore.Repository.BooksRepository;
 public class BookDetailsViewModel extends ViewModel {
 
     private BooksRepository booksRepository;
-    private MutableLiveData<Book> book;
+    private LiveData<Book> book;
 
     public void init(Context mContext) {
         booksRepository = new BooksRepository(mContext);
+
+        book = booksRepository.getBook();
+
     }
-/*
-    public void getSpecificBookDetails(String bookID){
-        booksRepository.getSpecificBookFromAPI(bookID);
-    }
-*/
+
     public LiveData<Book> getBook(){
         return book;
     }
@@ -32,5 +31,9 @@ public class BookDetailsViewModel extends ViewModel {
 
     public void removeBookFromFavorite(String id) {
         booksRepository.removeBookFromFavorites(id);
+    }
+
+    public void getUpdatedBook(String id){
+        booksRepository.fetchBook(id);
     }
 }

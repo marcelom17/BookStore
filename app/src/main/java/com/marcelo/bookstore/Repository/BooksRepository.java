@@ -21,11 +21,14 @@ import java.util.Map;
 public class BooksRepository {
 
     final MutableLiveData<ArrayList<Book>> books = new MutableLiveData<>();
-    final MutableLiveData<ArrayList<Book>> favorites = new MutableLiveData<>(); //maybe switch to save id, & search for the books next
+    final MutableLiveData<ArrayList<Book>> favorites = new MutableLiveData<>();
     final MutableLiveData<Book> book = new MutableLiveData<>();
+
+    ArrayList<Book> tempBooks = new ArrayList<>();
 
     public BooksRepository(Context mContext) {
         SharedPrefs.init(mContext);
+
     }
 
     public void getBooksFromAPI(int start){
@@ -38,17 +41,15 @@ public class BooksRepository {
             @Override
             public void returnResult(JsonObject jsonObject) {
                 JSONFilesManager.getBooksFromJSON(jsonObject).done((DoneCallback<ArrayList<Book>>) result ->{
-                 //   books.postValue(result);
+                  //  books.postValue(result);
 
-                    //Add favorites
+                    //Add favorite to books
                     ArrayList<Book> updated = result;
-                    ArrayList<Book> temp = new ArrayList<>();
                     ArrayList<String> favs = SharedPrefs.getFavoriteBooks();
                     int i=0;
                     for(Book b : result){
                         for(String id : favs) {
                             if (b.getId().equalsIgnoreCase(id)) {
-                                temp.add(b);
                                 updated.get(i).setFavorite(true);
                                 break;
                             }
@@ -56,8 +57,7 @@ public class BooksRepository {
                         i++;
                     }
                     books.postValue(updated);
-                    favorites.postValue(temp);
-                    //add glide to get images here?
+
 
                 }); //TODO implement fail to not brick the app if reading json fails
             }
@@ -73,9 +73,6 @@ public class BooksRepository {
         return books;
     }
 
-    public LiveData<ArrayList<Book>> getFavorites(){
-        return favorites;
-    }
 
     public void addBookToFavorites(String bookID){
         Boolean exists = false;
@@ -103,54 +100,69 @@ public class BooksRepository {
             }
     }
 
-    public void clearBooks() {
-        books.postValue(new ArrayList<>());
+    public void fetchFavorites(){
+        ArrayList<String> temp =  SharedPrefs.getFavoriteBooks();
+
+        for(String id : temp){
+            getSpecificBookFromAPI(id, true);
+        }
+
+      //  favorites.postValue(tempBooks);
     }
 
-    public void clearFavorites() {
-        favorites.postValue(new ArrayList<>());
-    }
-
- /*   public void getFavsFromSharedPrefs(){
-        ArrayList<Book> temp = new ArrayList<>();
+    public void fetchBook(String bookID){
+        boolean isFavorite = false;
         ArrayList<String> favs = SharedPrefs.getFavoriteBooks();
-        for(Book b : result){
-            for(String id : favs) {
-                if (b.getId().equalsIgnoreCase(id)) {
-                    temp.add(b);
-                    break;
-                }
+        int i=0;
+        for(String id : favs){
+            if (id.equalsIgnoreCase(bookID)) {
+                isFavorite = true;
+                break;
             }
         }
-        favorites.postValue(temp);
+        getSpecificBookFromAPI(bookID, isFavorite);
     }
-   */
 
-  /*  public void getSpecificBookFromAPI(String bookID){
-        Map<String, String> parameters =  new HashMap<>();
-        parameters.put("maxResults", "20");
+    public void getSpecificBookFromAPI(String bookID, boolean isFavorite){
 
-
-        BookTask.getBooks(new Callback<JsonObject>() {
+        BookTask.getSpecificBook(new Callback<JsonObject>() {
             @Override
             public void returnResult(JsonObject jsonObject) {
-                JSONFilesManager.getBooksFromJSON(jsonObject).done((DoneCallback<ArrayList<Book>>) result ->{
-                    books.postValue(result);
+                JSONFilesManager.getSpecificBookFromJSON(jsonObject).done((DoneCallback<Book>) result ->{
+                    if(isFavorite)
+                        result.setFavorite(true);
 
-                    //add glide to get images here?
+                    boolean exists = false;
+                    for(int i=0;i<tempBooks.size();i++){
+                        if(result.getId().equalsIgnoreCase(tempBooks.get(i).getId())){
+                            exists = true;
+                            break;
+                        }
+                    }
+                    if(!exists){
+                        tempBooks.add(result);
+                        favorites.postValue(tempBooks);
+                    }
+                    book.postValue(result);
+                });
 
-                }); //TODO implement fail to not brick the app if reading json fails
+                //TODO implement fail to not brick the app if reading json fails
             }
 
             @Override
             public void returnError(String message) {
 
             }
-        }, parameters);
+        }, bookID);
+
     }
 
-    public LiveData<Book> getSingleBook() {
+    public LiveData<ArrayList<Book>> getFavorites(){
+        return favorites;
+    }
+
+    public LiveData<Book> getBook(){
         return book;
     }
-*/
+
 }

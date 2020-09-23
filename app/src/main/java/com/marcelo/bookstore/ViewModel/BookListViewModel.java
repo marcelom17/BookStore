@@ -14,12 +14,10 @@ public class BookListViewModel extends ViewModel {
 
     private BooksRepository booksRepository;
     private LiveData<ArrayList<Book>> books;
-    private LiveData<ArrayList<Book>> favorites;
 
     public void init(Context mContext){
         booksRepository = new BooksRepository(mContext);
         books = booksRepository.getBooks();
-        favorites = booksRepository.getFavorites();
         //get the first 20 books for when app displays the main list, is already populated, no need to wait
         startGettingBooks();
     }
@@ -36,19 +34,4 @@ public class BookListViewModel extends ViewModel {
         return books;
     }
 
-    public LiveData<ArrayList<Book>> getFavorites(){
-        return favorites;
-    }
-
-    public void saveCurrentArray(ArrayList<Book> currentArray) {
-
-    }
-
-    public void clearBooks() {
-        booksRepository.clearBooks();
-    }
-
-    public void clearFavorites() {
-        booksRepository.clearFavorites();
-    }
 }

@@ -1,6 +1,7 @@
 package com.marcelo.bookstore.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
@@ -23,6 +24,7 @@ import com.marcelo.bookstore.ViewModel.BookDetailsViewModel;
 public class BookDetailsActivity extends AppCompatActivity {
 
     private BookDetailsViewModel bookDetailsViewModel;
+    private Book bookIntent = new Book();
     private Book book = new Book();
 
     private ImageView thumbnailIV;
@@ -39,16 +41,26 @@ public class BookDetailsActivity extends AppCompatActivity {
 
         //getIntent with ID
         if(getIntent() != null)
-            book = getIntent().getParcelableExtra(Utils.BOOK_BUNDLE_KEY);
+            bookIntent = getIntent().getParcelableExtra(Utils.BOOK_BUNDLE_KEY);
 
         init();
     }
 
-    @SuppressLint("ResourceAsColor")
     private void init(){
         bookDetailsViewModel = new ViewModelProvider(this).get(BookDetailsViewModel.class);
         bookDetailsViewModel.init(getApplicationContext());
 
+        if(bookIntent != null){
+            bookDetailsViewModel.getUpdatedBook(bookIntent.getId());
+            bookDetailsViewModel.getBook().observe(this, book -> {
+                this.book = book;
+                initUI();
+            });
+        }
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private void initUI(){
         thumbnailIV = findViewById(R.id.bookDetailsThumbnailIV);
         titleTV = findViewById(R.id.bookDetailsTitleTV);
         authorTV = findViewById(R.id.bookDetailsAuthorTV);
@@ -83,9 +95,9 @@ public class BookDetailsActivity extends AppCompatActivity {
             titleTV.setText(book.getVolumeInfo().getTitle());
             authorTV.setText(book.getVolumeInfo().getAuthors().toString());
             descriptionTV.setText(book.getVolumeInfo().getDescription());
-
-        }
     }
+    }
+
 
     public void buyBookOnClick(View view) {
         //open browser with the link

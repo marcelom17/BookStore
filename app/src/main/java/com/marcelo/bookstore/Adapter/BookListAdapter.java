@@ -1,8 +1,6 @@
 package com.marcelo.bookstore.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +8,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.marcelo.bookstore.Model.Book;
 import com.marcelo.bookstore.R;
-import com.marcelo.bookstore.Utils.Utils;
-import com.marcelo.bookstore.View.BookDetailsActivity;
 
 import java.util.ArrayList;
 
@@ -50,14 +45,12 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookLi
 
         private ImageView thumbnailIV;
         private TextView titleTV;
-        private CardView bookCV;
 
         public BookListViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
 
             thumbnailIV = itemView.findViewById(R.id.thumbnailIV);
             titleTV = itemView.findViewById(R.id.titleTV);
-            bookCV = itemView.findViewById(R.id.bookCardView);
 
             itemView.setOnClickListener(v ->{
                 if(listener != null){
@@ -89,7 +82,6 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookLi
         Book book = books.get(position);
 
         holder.titleTV.setText(book.getVolumeInfo().getTitle());
-        //holder.thumbnailIV.setImageResource(books.get(position).get);
 
         if (book.getVolumeInfo().getImageLinks() != null) {
             String imageUrl = book.getVolumeInfo().getImageLinks().getThumbnail()

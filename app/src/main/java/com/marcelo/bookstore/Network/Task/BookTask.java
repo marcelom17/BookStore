@@ -46,4 +46,34 @@ public class BookTask {
                 });
     }
 
+    public static void getSpecificBook(final Callback<JsonObject> callback, String bookID){
+        NetworkUtils.getBookApiInstance().getVolume(bookID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<Response<JsonObject>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Response<JsonObject> jsonObjectResponse) {
+                        if(jsonObjectResponse.code() == Utils.HTTP_SUCCESSFUL)
+                            callback.returnResult(jsonObjectResponse.body());
+                        else
+                            callback.returnError(jsonObjectResponse.message());
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        callback.returnError(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
 }
