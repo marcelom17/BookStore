@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.marcelo.bookstore.Adapter.BookListAdapter;
 import com.marcelo.bookstore.Model.Book;
 import com.marcelo.bookstore.R;
@@ -24,7 +25,7 @@ import com.marcelo.bookstore.ViewModel.BookListViewModel;
 import com.marcelo.bookstore.ViewModel.SplashScreenViewModel;
 
 public class BookListActivity extends AppCompatActivity {
-
+    private FirebaseAnalytics mFirebaseAnalytics;
     private BookListViewModel bookListViewModel;
 
     private RecyclerView booksListRecyclerView;
@@ -43,6 +44,9 @@ public class BookListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
+
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         init();
     }
@@ -105,6 +109,14 @@ public class BookListActivity extends AppCompatActivity {
 
 
     public void showFavorites(View view) {
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(R.id.bookListFavoritesBtn));
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Favorites");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
+        Log.i("PRESS FAV", "after logEvent");
 
         Intent intent = new Intent(this, BookListFavoritesActivity.class);
         startActivity(intent);

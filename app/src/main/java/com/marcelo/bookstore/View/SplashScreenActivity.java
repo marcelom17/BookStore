@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ProgressBar;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.marcelo.bookstore.Model.Book;
 import com.marcelo.bookstore.R;
 import com.marcelo.bookstore.ViewModel.SplashScreenViewModel;
@@ -29,7 +30,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
 
         init();
-
     }
 
     private void init(){
