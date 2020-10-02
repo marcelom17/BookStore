@@ -44,7 +44,8 @@ public class BookListFavoritesActivity extends AppCompatActivity {
         bookListFavoritesViewModel.init(getApplicationContext());
 
         bookListLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
-        booksListRecyclerView = findViewById(R.id.bookListFavoritesRecyclerView);
+        //booksListRecyclerView = findViewById(R.id.bookListFavoritesRecyclerView);
+        booksListRecyclerView = findViewById(R.id.bookListRecyclerView); //test crash
         bookListAdapter = new BookListAdapter(getApplicationContext());
         booksListRecyclerView.setLayoutManager(bookListLayoutManager);
         booksListRecyclerView.setHasFixedSize(true);

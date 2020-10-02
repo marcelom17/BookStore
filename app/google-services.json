@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "251627946281",
+    "firebase_url": "https://bookstore-1600471547121.firebaseio.com",
+    "project_id": "bookstore-1600471547121",
+    "storage_bucket": "bookstore-1600471547121.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:251627946281:android:f1863ec3b6079184a07738",
+        "android_client_info": {
+          "package_name": "com.marcelo.bookstore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "251627946281-4cn4hhvdfqsd7q38rvc0dh6qoov3rqea.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdHrzsdDDBdvxLw8AKk0IamVf6lPgTjQ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "251627946281-4cn4hhvdfqsd7q38rvc0dh6qoov3rqea.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
