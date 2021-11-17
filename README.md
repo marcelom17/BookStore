@@ -9,9 +9,8 @@ instead are saved on SharedPrefences to be able to have the favorites always rea
 
 # TODO
 
-* It's need to create more validations on all data fetched. 
-* Instead of using 2 activities with the same layout, it should be all done with one using the same RecyclerView. (It was the first approach but problems with some data being 
-duplicated led to 2 activites in the final version).
+* Create more validations for all the fetched data. 
+* Instead of using 2 activities with the same layout, it should be all done with one using the same RecyclerView. (It was the first approach but problems with some data being duplicated led to 2 activites in the final version).
 
 # Notes about MVVM
 
